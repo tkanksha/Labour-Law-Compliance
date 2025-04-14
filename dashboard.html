@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Labour Law Compliance Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="sidebar">
+      <h2>🛡️ Compliance Hub</h2>
+      <ul>
+        <li><a href="#" onclick="showSection('overview')">📊 Overview</a></li>
+        <li><a href="#" onclick="showSection('salary')">💰 Salary Calculator</a></li>
+        <li><a href="#" onclick="showSection('attendance')">🕒 Attendance</a></li>
+        <li><a href="#" onclick="showSection('articles')">📚 Articles & Guides</a></li>
+        <li><a href="index.html">🚪 Logout</a></li>
+      </ul>
+    </nav>
+
+    <main class="main-content">
+      <button id="themeToggle" onclick="toggleTheme()" style="float: right; margin-bottom: 20px;">
+        🌙 Switch to Dark Mode
+      </button>
+      <section id="overview" class="content-section">
+        <h2 style="color: aliceblue;">Compliance Overview</h2>
+        <!-- Main Chart -->
+  <canvas id="complianceChart"></canvas>
+
+  <!-- Scorecard Section -->
+  <div style="color: black;" class="scorecards">
+    <h3>📈 Scorecard</h3>
+    <p>Wage Compliance</p>
+    <progress value="85" max="100"></progress>
+    <p>Working Hours Compliance</p>
+    <progress value="92" max="100"></progress>
+    <p>PF/ESI Filing</p>
+    <progress value="75" max="100"></progress>
+  </div>
+
+  <!-- Recent Activities Section -->
+  <div style="color: black;" class="recent-activities">
+    <h3>📝 Recent Compliance Activities</h3>
+    <ul>
+      <li>✔️ April 10: Filed Monthly PF Returns</li>
+      <li>⚠️ April 05: Audit notice received for ESI records</li>
+      <li>✔️ March 25: Completed wage revision for 2025</li>
+    </ul>
+  </div>
+
+  <!-- Risk Alerts Section -->
+  <div class="alerts">
+    <h3 style="color: black;">🚨 Risk Alerts</h3>
+    <p>⚠️ 2 Notices Pending Review</p>
+    <p>📅 1 Filing Deadline This Week</p>
+  </div>
+</section>
+      </section>
+
+      <section id="salary" class="content-section hidden">
+        <h2>Salary Calculator</h2>
+        <div class="salary-inputs">
+          <input type="number" id="basic" placeholder="Enter Basic Salary" />
+          <input type="number" id="da" placeholder="Enter DA (%)" />
+          <input type="number" id="hra" placeholder="Enter HRA (%)" />
+          <button onclick="calculateSalary()">Calculate</button>
+        </div>
+        <div style="color: black;" id="salaryBreakdown" class="salary-breakdown hidden">
+          <h3>Salary Breakdown</h3>
+          <p><strong>Basic Salary:</strong> ₹<span id="basicVal"></span></p>
+          <p><strong>Dearness Allowance (DA):</strong> ₹<span id="daVal"></span></p>
+          <p><strong>House Rent Allowance (HRA):</strong> ₹<span id="hraVal"></span></p>
+          <p><strong>Provident Fund (12%):</strong> ₹<span id="pfVal"></span></p>
+          <hr>
+          <p><strong>Gross Salary:</strong> ₹<span id="grossVal"></span></p>
+          <p><strong>Net Salary (after PF):</strong> ₹<span id="netVal"></span></p>
+        </div>
+      </section>
+
+      <section id="attendance" class="content-section hidden">
+        <h2>Attendance Tracker</h2>
+        <label for="month">📅 Select Month:</label>
+  <select id="month">
+    <option>January</option>
+    <option>February</option>
+    <option>March</option>
+    <option>April</option>
+    <option>May</option>
+    <option>June</option>
+    <option>July</option>
+    <option>August</option>
+    <option>September</option>
+    <option>October</option>
+    <option>November</option>
+    <option>December</option>
+    <!-- Add more months as needed -->
+  </select>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Employee</th>
+        <th>Days Present</th>
+        <th>Days Absent</th>
+        <th>Attendance %</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Amit Kumar</td>
+        <td>22</td>
+        <td>2</td>
+        <td>91.67%</td>
+        <td><span class="status good">Good</span></td>
+      </tr>
+      <tr>
+        <td>Neha Reddy</td>
+        <td>20</td>
+        <td>4</td>
+        <td>83.33%</td>
+        <td><span class="status warning">Warning</span></td>
+      </tr>
+      <tr>
+        <td>Rohan Das</td>
+        <td>16</td>
+        <td>8</td>
+        <td>66.67%</td>
+        <td><span class="status poor">Poor</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="attendance-summary">
+    <p ><strong>📌 Summary:</strong> 3 Employees Tracked | Average Attendance: <strong>80.56%</strong></p>
+  </div>
+</section>
+      <section id="articles" class="content-section hidden">
+        <h2>📚 Articles & Guides</h2>
+        <input type="text" id="articleSearch" placeholder="Search articles..." onkeyup="filterArticles()" style="padding: 8px; width: 100%; margin-bottom: 20px;"/>
+
+  <div class="articles-container" id="articlesContainer">
+    <article class="article-card" data-tags="law wages">
+      <h3>Understanding the Minimum Wages Act</h3>
+      <span class="tag">Law</span>
+      <p>Learn how the act protects workers and ensures fair pay. Updated as of 2025.</p>
+      <a href="#">Read More</a> | <a href="#">📄 PDF</a> | <span class="bookmark">⭐</span>
+    </article>
+
+    <article class="article-card" data-tags="attendance audit">
+      <h3>Employee Attendance Rules - Explained</h3>
+      <span class="tag">Checklist</span>
+      <p>Know your obligations for record keeping and audit compliance under Indian Labour Law.</p>
+      <a href="#">Read More</a> | <a href="#">📄 PDF</a> | <span class="bookmark">⭐</span>
+    </article>
+
+    <article class="article-card" data-tags="compliance yearly checklist">
+      <h3>Checklist for Annual Labour Compliance</h3>
+      <span class="tag">Checklist</span>
+      <p>Step-by-step guide to make sure your organization is always compliant.</p>
+      <a href="#">Download PDF</a> | <span class="bookmark">⭐</span>
+    </article>
+
+    <article class="article-card" data-tags="tips hr">
+      <h3>Top 5 Tips for HR to Stay Labour Law Compliant</h3>
+      <span class="tag">Tips</span>
+      <p>Simple actionable tips HR managers can follow to avoid legal troubles.</p>
+      <a href="#">Read More</a> | <span class="bookmark">⭐</span>
+    </article>
+
+    <article class="article-card" data-tags="contractor gigworkers">
+      <h3>Labour Laws for Gig and Contractual Workers</h3>
+      <span class="tag">Law</span>
+      <p>Understand how compliance applies to modern gig economy employees and contractors.</p>
+      <a href="#">Explore</a> | <a href="#">📄 Download</a> | <span class="bookmark">⭐</span>
+    </article>
+  </div>
+</section>
+    </main>
+  </div>
+
+  <script>
+    // Chart
+    const ctx = document.getElementById('complianceChart');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Compliant', 'Pending', 'Non-Compliant'],
+        datasets: [{
+          label: 'Labour Law Status',
+          data: [60, 25, 15],
+          backgroundColor: ['#4CAF50', '#FFC107', '#F44336']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom' }
+        }
+      }
+    });
+
+    // Show only one section at a time
+    function showSection(id) {
+      const sections = document.querySelectorAll('.content-section');
+      sections.forEach(section => {
+        section.classList.add('hidden');
+      });
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    // Salary calculator logic
+    function calculateSalary() {
+  const basic = parseFloat(document.getElementById('basic').value);
+  const daPercent = parseFloat(document.getElementById('da').value);
+  const hraPercent = parseFloat(document.getElementById('hra').value);
+
+  if (isNaN(basic) || isNaN(daPercent) || isNaN(hraPercent)) {
+    alert("Please enter valid values for all fields.");
+    return;
+  }
+
+  const da = (basic * daPercent) / 100;
+  const hra = (basic * hraPercent) / 100;
+  const pf = basic * 0.12;
+
+  const grossSalary = basic + da + hra;
+  const netSalary = grossSalary - pf;
+
+  // Populate breakdown
+  document.getElementById('basicVal').innerText = basic.toFixed(2);
+  document.getElementById('daVal').innerText = da.toFixed(2);
+  document.getElementById('hraVal').innerText = hra.toFixed(2);
+  document.getElementById('pfVal').innerText = pf.toFixed(2);
+  document.getElementById('grossVal').innerText = grossSalary.toFixed(2);
+  document.getElementById('netVal').innerText = netSalary.toFixed(2);
+
+  document.getElementById('salaryBreakdown').classList.remove('hidden');
+}
+
+    // Load overview by default
+    window.onload = () => showSection('overview');
+  </script>
+  <script>
+    function toggleTheme() {
+      const body = document.body;
+      const toggleButton = document.getElementById("themeToggle");
+      body.classList.toggle("dark-mode");
+      toggleButton.innerText = body.classList.contains("dark-mode")
+        ? "☀️ Switch to Light Mode"
+        : "🌙 Switch to Dark Mode";
+      localStorage.setItem("theme", body.classList.contains("dark-mode") ? "dark" : "light");
+    }
+  
+    window.onload = () => {
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark") {
+        document.body.classList.add("dark-mode");
+        document.getElementById("themeToggle").innerText = "☀️ Switch to Light Mode";
+      }
+    };
+  </script>
+  
+</body>
+</html>
